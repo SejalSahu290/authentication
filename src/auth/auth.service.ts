@@ -5,6 +5,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { AuthCredentialsDto } from 'src/expenses/dto/auth-credentials.dto';
 import { User } from './user.entity';
 import { Repository } from 'typeorm';
+import { JwtService } from '@nestjs/jwt';
+import { JwtPayload } from 'jsonwebtoken';
 // import { sign } from 'crypto';
 // import { Repository } from 'typeorm';
 
@@ -13,6 +15,7 @@ export class AuthService {
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
+    private jwtService: JwtService,
   ) {}
 
   //create a new auth
@@ -28,13 +31,15 @@ export class AuthService {
     return;
   }
 
-async signin(authCredentialsdto:AuthCredentialsDto): Promise<void>{
+async signin(authCredentialsdto:AuthCredentialsDto): Promise<{accessToken: string}>{
     const {username, password} = authCredentialsdto;
 
    const user = await this.userRepository.findOneBy({username: username})
     
    if(user.password ===  password ){
-    return;
+    const payload: JwtPayload = {username};
+    const accessToken: string = await this.jwtService.sign(payload);
+    return{ accessToken };
    }
    else{
     throw new UnauthorizedException('Please check your login credentials');
