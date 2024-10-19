@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
-import { ExpenseStatus } from "./expense.model";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { User } from "src/auth/user.entity";
+import { Exclude } from "class-transformer";
 
 @Entity()
 export class Expense{
@@ -19,7 +20,9 @@ export class Expense{
  @Column()
  amount:number;
 
-
- @Column()
- status:ExpenseStatus;
+ 
+ // eslint-disable-next-line @typescript-eslint/no-unused-vars
+ @ManyToOne(_type => User, user=> user.expense, {eager: false})
+ @Exclude({toPlainOnly: true})
+ user: User;
 }
