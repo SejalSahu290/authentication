@@ -5,12 +5,10 @@ import { ExpensesService } from './expenses.service';
 import { Expense } from './expense.entity';
 import { CreateExpenseDto } from './dto/create-expense.dto';
 import { GetExpenseFilterDto } from './dto/get-expense-filter.dto';
-// import { UpdateExpenseStatusDto } from './dto/update-expense-status.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { GetUser } from 'src/auth/get-user.decorator';
 import { User } from 'src/auth/user.entity';
 import { UpdateExpenseDto } from './dto/update-expense.dto';
-// import { ExpenseStatus } from './expense.model';
 
 @Controller('expenses')
 @UseGuards(AuthGuard())
@@ -39,7 +37,7 @@ export class ExpensesController {
   // }
 
   @Get('/:id')
-  getExpenseById(@Param('id') id: string, @GetUser() user: User): Promise<Expense>{
+  getExpenseById(@Param('id') id: number, @GetUser() user: User): Promise<Expense>{
       return this.expenseService.getExpenseById(id, user);
   }
 

@@ -16,12 +16,9 @@ export class AuthController {
 
   @Post('signin')
   async signin(@Body() authCredentialsDto:AuthCredentialsDto): Promise<{ accessToken: string}>{
+    
     return this.authService.signin(authCredentialsDto);
   }
 
-  // @Post('/test')
-  // @UseGuards(AuthGuard())
-  // test(@Req() req){
-  //   console.log(req);
-  // }
+ 
 }

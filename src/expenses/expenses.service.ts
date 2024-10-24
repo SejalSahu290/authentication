@@ -24,7 +24,6 @@ export class ExpensesService {
     query.where({ user });
 
     if(search){
-      console.log(search)
         query.andWhere('(LOWER(expense.title) LIKE LOWER(:search) OR LOWER(expense.description) LIKE LOWER(:search))',
           { search : `%${search}%`},
         );
@@ -36,8 +35,8 @@ export class ExpensesService {
 
 
 
-async getExpenseById(id: string, user: User): Promise<Expense>{
-    const found = await this.expenseRepository.findOne({ where:{ user}})
+async getExpenseById(id: number, user: User): Promise<Expense>{
+    const found = await this.expenseRepository.findOne({ where:{id, user}})
     if(!found){
       throw new NotFoundException(`Expense with id "${id}" not found`);
     }
@@ -66,6 +65,9 @@ async getExpenseById(id: string, user: User): Promise<Expense>{
 
 
 async delete(id: string): Promise<void> {
+
+    //await this.expenseRepository.remove();
+
     const result = await this.expenseRepository.delete(id);
 
     if(result.affected === 0){
@@ -79,13 +81,12 @@ async updateExpense(updateExpenseDto: UpdateExpenseDto , user): Promise<Expense>
 
   const { title , description , amount} = updateExpenseDto;
     
-    const expense =  await this.getExpenseById(updateExpenseDto.id, user);
+    const expense =  await this.getExpenseById(+updateExpenseDto.id, user);
 
     
     expense.title = title;
     expense.description = description;
     expense.amount = amount;
-
      
 
     await this.expenseRepository.save(expense);

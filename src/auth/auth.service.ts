@@ -32,11 +32,14 @@ export class AuthService {
   }
 
 async signin(authCredentialsdto:AuthCredentialsDto): Promise<{accessToken: string}>{
+  console.log('authCredentialsDto' , authCredentialsdto)
     const {username, password} = authCredentialsdto;
-
+      
    const user = await this.userRepository.findOneBy({username: username})
-    
-   if(user.password ===  password ){
+     
+   console.log(user)
+
+   if( user && user.password ===  password ){
     const payload: JwtPayload = {username};
     const accessToken: string = await this.jwtService.sign(payload);
     return{ accessToken };
