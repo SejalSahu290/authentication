@@ -16,4 +16,7 @@ export class UpdateExpenseDto{
 
     @IsNotEmpty()
     amount:number;
+
+    @IsNotEmpty()
+    categoryId: number;
 }

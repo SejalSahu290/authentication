@@ -2,6 +2,9 @@
 
 import { IsNotEmpty } from "class-validator";
 export class CreateExpenseDto{
+
+    
+    
     @IsNotEmpty()
     title: string;
 
@@ -10,4 +13,8 @@ export class CreateExpenseDto{
 
     @IsNotEmpty()
     amount:number;
+
+    @IsNotEmpty()
+    categoryId: number;
+
 }
