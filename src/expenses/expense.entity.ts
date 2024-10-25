@@ -29,7 +29,7 @@ export class Expense{
 
  // eslint-disable-next-line @typescript-eslint/no-unused-vars
  @ManyToOne(_type => Category, category=> category.expenses, {eager: false})
- @Exclude({toPlainOnly: true})
+//  @Exclude({toPlainOnly: true})
  category: Category;
 
 }

@@ -22,9 +22,11 @@ export class ExpensesService {
   async getAllExpense(filterDto : GetExpenseFilterDto, user: User): Promise<Expense[]>{
 
     const { search} = filterDto;
-    const query = this.expenseRepository.createQueryBuilder('expense');
+    const query = this.expenseRepository.createQueryBuilder('expense')
+  .leftJoinAndSelect('expense.category', 'category') // Explicitly join the category
+  .where({ user });
       
-    query.where({ user });
+    // query.where({ user });
 
     if(search){
         query.andWhere('(LOWER(expense.title) LIKE LOWER(:search) OR LOWER(expense.description) LIKE LOWER(:search))',
@@ -39,10 +41,16 @@ export class ExpensesService {
 
 
 async getExpenseById(id: number, user: User): Promise<Expense>{
-    const found = await this.expenseRepository.findOne({ where:{id, user}})
-    if(!found){
-      throw new NotFoundException(`Expense with id "${id}" not found`);
-    }
+    // const found = await this.expenseRepository.findOne({ where:{id, user}})
+    // if(!found){
+    //   throw new NotFoundException(`Expense with id "${id}" not found`);
+    // }
+
+    const found = await this.expenseRepository.findOne({
+      where: { id, user },
+      relations: ['category'],  // Specify the category relationship
+    });
+
 
     return found;
   }

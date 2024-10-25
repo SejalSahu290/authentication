@@ -10,6 +10,6 @@ export class Category {
     @Column()
     name:string;
 
-    @OneToMany(() => Expense, (expense) => expense.category, { eager: true })
+    @OneToMany(() => Expense, (expense) => expense.category, { eager: false })
     expenses: Expense[];
 }
