@@ -30,7 +30,7 @@ export class ExpensesController {
       return await this.expenseService.getAllExpense(filterDto, user);
   }
 
-  // Get a single expense by its ID
+  // Get a single expense by its IDP@
   // @Get('/:id')
   // async getExpenseById(@Param('id') id: number): Promise<Expense> {
   //   return await this.expenseService.getExpenseById(id);
