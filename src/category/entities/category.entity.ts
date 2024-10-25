@@ -1,5 +1,6 @@
 /* eslint-disable prettier/prettier */
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Expense } from "src/expenses/expense.entity";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class Category {
@@ -8,4 +9,7 @@ export class Category {
 
     @Column()
     name:string;
+
+    @OneToMany(() => Expense, (expense) => expense.category, { eager: true })
+    expenses: Expense[];
 }
