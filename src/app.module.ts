@@ -1,7 +1,5 @@
 /* eslint-disable prettier/prettier */
 import { Module } from '@nestjs/common';
-// import { ExpensesController } from './expenses/expenses.controller';
-// import { ExpensesService } from './expenses/expenses.service';
 import { ExpensesModule } from './expenses/expenses.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
@@ -23,9 +21,6 @@ import { CategoryModule } from './category/category.module';
     AuthModule,
     CategoryModule,
     
-  
   ],
-  // controllers: [ExpensesController],
-  // providers: [ExpensesService],
 })
 export class AppModule {}

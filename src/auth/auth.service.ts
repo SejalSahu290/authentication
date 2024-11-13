@@ -2,7 +2,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 // import { UserRepository } from './users.repository';
 import { InjectRepository } from '@nestjs/typeorm';
-import { AuthCredentialsDto } from 'src/expenses/dto/auth-credentials.dto';
+import { AuthCredentialsDto } from '../auth/auth-credentials.dto';
 import { User } from './user.entity';
 import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
@@ -32,7 +32,7 @@ export class AuthService {
   }
 
 async signin(authCredentialsdto:AuthCredentialsDto): Promise<{accessToken: string}>{
-  console.log('authCredentialsDto' , authCredentialsdto)
+  // console.log('authCredentialsDto' , authCredentialsdto)
     const {username, password} = authCredentialsdto;
       
    const user = await this.userRepository.findOneBy({username: username})

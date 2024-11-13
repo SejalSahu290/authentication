@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import {  Body, Controller, Post} from '@nestjs/common';
-import { AuthCredentialsDto } from 'src/expenses/dto/auth-credentials.dto';
+import { AuthCredentialsDto } from '../auth/auth-credentials.dto';
 import { AuthService } from './auth.service';
 // import { AuthGuard } from '@nestjs/passport';
 

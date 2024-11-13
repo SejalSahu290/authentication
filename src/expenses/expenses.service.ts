@@ -23,8 +23,8 @@ export class ExpensesService {
 
     const { search} = filterDto;
     const query = this.expenseRepository.createQueryBuilder('expense')
-  .leftJoinAndSelect('expense.category', 'category') // Explicitly join the category
-  .where({ user });
+  .leftJoinAndSelect('expense.category', 'category') 
+  .where({ user }); 
       
     // query.where({ user });
 
@@ -48,7 +48,7 @@ async getExpenseById(id: number, user: User): Promise<Expense>{
 
     const found = await this.expenseRepository.findOne({
       where: { id, user },
-      relations: ['category'],  // Specify the category relationship
+      relations: ['category'],  
     });
 
 
