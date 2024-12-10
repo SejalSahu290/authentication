@@ -9,11 +9,18 @@ import { AuthGuard } from '@nestjs/passport';
 @Controller('category')
 @UseGuards(AuthGuard())
 export class CategoryController {
+  categoriesService: any;
   constructor(private readonly categoryService: CategoryService) {}
 
   @Get()
   async getAllCategory(): Promise<Category[]> {
     return await this.categoryService.getAllCategory();
+  }
+
+
+  @Get('/category')
+  async getAllCategories(): Promise<Category[]> {
+    return await this.categoryService.getAllCategories();
   }
 
   @Get('/:id')

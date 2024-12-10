@@ -32,4 +32,7 @@ export class Expense{
 //  @Exclude({toPlainOnly: true})
  category: Category;
 
+//  @ManyToOne(() => Category, (category) => category.expenses , {eager : false})
+//  category: Category;
+
 }

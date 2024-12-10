@@ -12,4 +12,6 @@ export class Category {
 
     @OneToMany(() => Expense, (expense) => expense.category, { eager: false })
     expenses: Expense[];
+
+
 }

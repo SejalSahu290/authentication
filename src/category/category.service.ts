@@ -19,6 +19,55 @@ export class CategoryService {
     return await this.categoryRepository.find();  
   }
 
+
+  async getAllCategories(): Promise<any[]> {
+    const { raw, entities } = await this.categoryRepository
+      .createQueryBuilder("category")
+      .leftJoin("category.expenses", "expense")
+      .addSelect("SUM(expense.amount)", "totalAmount")
+      .addSelect("SUM(SUM(expense.amount)) OVER()", "totalAmountOfAllCategories") 
+      .addSelect(
+        "(SUM(expense.amount) * 100) / SUM(SUM(expense.amount)) OVER()",
+        "percentage"
+      ) // Percentage calculation
+      .groupBy("category.id")
+      .getRawAndEntities();
+  
+    return entities.map((category, index) => ({
+      ...category,
+      totalAmount: parseFloat(raw[index].totalAmount),
+      totalAmountOfAllCategories: parseFloat(raw[index].totalAmountOfAllCategories),
+      percentage: parseFloat(raw[index].percentage), 
+    }));
+  }
+  
+  // async getAllCategories(): Promise<any[]> {
+  //   const { raw, entities } = await this.categoryRepository
+  //     .createQueryBuilder("category")
+  //     .leftJoin("category.expenses", "expense")
+  //     .addSelect("SUM(expense.amount)", "totalAmount")
+  //     .addSelect("SUM(SUM(expense.amount)) OVER()", "totalAmountOfAllCategories") // Add window function for total
+  //     .groupBy("category.id")
+  //     .getRawAndEntities();
+  
+  //   return entities.map((category, index) => ({
+  //     ...category,
+  //     totalAmount: parseFloat(raw[index].totalAmount),
+  //     totalAmountOfAllCategories: parseFloat(raw[index].totalAmountOfAllCategories), // Add the total of all categories
+  //   }));
+  // }
+
+
+  
+  
+  // async getAllCategories(): Promise<Category[]> {
+  //   return await this.categoryRepository
+  //     .createQueryBuilder("category")
+  //     .leftJoinAndSelect("category.expenses", "expense") 
+  //     .getMany();
+  // }
+  
+
   //Get Category By Id
   async getCategoryById(id: number): Promise<Category> {
     const category = await this.categoryRepository.findOneBy({ id });

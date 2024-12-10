@@ -13,6 +13,7 @@ import { CategoryService } from 'src/category/category.service';
 
 @Injectable()
 export class ExpensesService {
+  // categoryRepository: any;
   constructor(
     @InjectRepository(Expense)
     private expenseRepository: Repository<Expense>,
@@ -39,6 +40,35 @@ export class ExpensesService {
   }
 
 
+  async getAllExpensesWithCategories(categoryId?: number): Promise<Expense[]> {
+    return this.expenseRepository.find({
+      where: categoryId ? { category: { id: categoryId } } : {}, 
+      relations: ["category"], 
+    });
+  }
+  
+  
+  // async getAllCategories(filter?: { categoryId?: number; categoryName?: string }): Promise<any[]> {
+  //   const queryBuilder = this.categoryRepository
+  //     .createQueryBuilder("category")
+  //     .leftJoinAndSelect("category.expenses", "expense"); 
+  
+  //   if (filter?.categoryId) {
+  //     queryBuilder.andWhere("category.id = :categoryId", { categoryId: filter.categoryId });
+  //   }
+  
+  //   if (filter?.categoryName) {
+  //     queryBuilder.andWhere("category.name LIKE :categoryName", { categoryName: `%${filter.categoryName}%` });
+  //   }
+  
+  //   const categories = await queryBuilder.getMany();
+  //   return categories.map((category) => ({
+  //     id: category.id,
+  //     name: category.name,
+  //     expenses: category.expenses,
+  //   }));
+  // }
+  
 
 async getExpenseById(id: number, user: User): Promise<Expense>{
     // const found = await this.expenseRepository.findOne({ where:{id, user}})
@@ -51,11 +81,9 @@ async getExpenseById(id: number, user: User): Promise<Expense>{
       relations: ['category'],  
     });
 
-
     return found;
   }
 
-  // Create a new expense
   async createExpense(
     createExpenseDto: CreateExpenseDto,
     user: User,
@@ -70,17 +98,14 @@ async getExpenseById(id: number, user: User): Promise<Expense>{
       description,
       amount,
       user,
-      category
-    
+      category 
     });
 
     await this.expenseRepository.save(expense);
     return expense;
   }
 
-
-
-async delete(id: string): Promise<void> {
+  async delete(id: string): Promise<void> {
 
     const result = await this.expenseRepository.delete(id);
 

@@ -30,6 +30,12 @@ export class ExpensesController {
       return await this.expenseService.getAllExpense(filterDto, user);
   }
 
+  @Get('/categories')
+  async getAllExpensesWithCategories(@Query('categoryId') categoryId?: number) {
+    return await this.expenseService.getAllExpensesWithCategories(categoryId);
+  }
+  
+  
   // Get a single expense by its IDP@
   // @Get('/:id')
   // async getExpenseById(@Param('id') id: number): Promise<Expense> {
